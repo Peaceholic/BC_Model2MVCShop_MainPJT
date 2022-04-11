@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+
+	<mapper namespace="TransferMapper">
+
+	<resultMap id="transferMapper" type="transfer">
+		<result property="transferNo"    		 			   column="transfer_no"     	   jdbcType="NUMERIC"/>
+		<result property="transferOr.id"	   	 			   column="user_id" 	       	   jdbcType="VARCHAR"/>
+		<result property="transferOr.nickName"	   	 		   column="nick_name" 	       	   jdbcType="VARCHAR"/>
+		<result property="transferRegdate"       			   column="transfer_reg_date"      jdbcType="VARCHAR"/>
+		<result property="transferTitle"  		 			   column="transfer_title" 	       jdbcType="VARCHAR"/>
+		<result property="transferArea"    		 			   column="transfer_camp_area"     jdbcType="VARCHAR"/>
+		<result property="transferCampname" 	 			   column="transfer_camp_name"     jdbcType="VARCHAR"/>
+		<result property="transferMainsiteType"  			   column="transfer_mainsite_type" jdbcType="VARCHAR"/>
+		<result property="transferCampCall"		 			   column="transfer_camp_call"     jdbcType="VARCHAR"/>
+		<result property="transferStartDate"	 			   column="transfer_start_date"    jdbcType="VARCHAR"/>
+		<result property="transferEndDate"  	 			   column="transfer_end_date" 	   jdbcType="VARCHAR"/>
+		<result property="transferPrice"    	 			   column="transfer_price" 	       jdbcType="NUMERIC"/>
+		<result property="transferContent" 	   	 			   column="transfer_content" 	   jdbcType="VARCHAR"/>
+		<result property="transferAddContent" 	 			   column="transfer_add_content"   jdbcType="VARCHAR"/>
+		<result property="transferUserNum" 		 			   column="transfer_use_num"       jdbcType="NUMERIC"/>
+		<result property="hashtag1"  		     			   column="transfer_hashtag1"      jdbcType="VARCHAR"/>
+	 	<result property="hashtag2"  						   column="transfer_hashtag2" 	   jdbcType="VARCHAR"/> 
+		<result property="hashtag3" 		     			   column="transfer_hashtag3" 	   jdbcType="VARCHAR"/>
+		<result property="paymentImg"						   column="transfer_payment_img"   jdbcType="VARCHAR"/>		
+		<result property="transferStatus"	     			   column="transfer_status"   	   jdbcType="NUMERIC"/>
+		<result property="deleteFlag"			 			   column="delete_flag"   		   jdbcType="CHAR"/>		
+		<result property="transferReservationNo.reservationNo" column="reservation_no"   	   jdbcType="VARCHAR"/>		
+		<result property="receiveStatus"					   column="receive_status"   	   jdbcType="NUMERIC"/>				
+		<result property="receiveNo"						   column="receive_no"   	   	   jdbcType="NUMERIC"/>	
+		<result property="receiveRegdate"					   column="receive_reg_date"   	   jdbcType="VARCHAR"/>	
+		<result property="receiveTitle"						   column="receive_title"   	   jdbcType="VARCHAR"/>	
+</resultMap> 
+
+<!-- SQL : INSERT -->
+<!-- 양도글 등록 -->
+
+	<insert    id="addTransfer"      parameterType="transfer" >
+      INSERT 
+      INTO  GAMSUNG.TRANSFER(transfer_title,transfer_camp_area,transfer_camp_name,transfer_mainsite_type,transfer_start_date,transfer_end_date,transfer_camp_call,transfer_use_num,transfer_price,transfer_content,transfer_add_content,transfer_payment_img,transfer_hashtag1,transfer_hashtag2,transfer_hashtag3,user_id,reservation_no)
+      VALUES    (#{transferTitle:VARCHAR},#{transferArea:VARCHAR},#{transferCampname:VARCHAR}, #{transferMainsiteType:VARCHAR}, 
+      #{transferStartDate:VARCHAR}, #{transferEndDate:VARCHAR}, #{transferCampCall:VARCHAR}, #{transferUserNum:NUMERIC},
+      #{transferPrice:NUMERIC}, #{transferContent:VARCHAR}, #{transferAddContent:VARCHAR}, #{paymentImg:VARCHAR},#{hashtag1:VARCHAR},#{hashtag2:VARCHAR},#{hashtag3:VARCHAR},#{transferOr.id},#{transferReservationNo.reservationNo:VARCHAR})    
+	</insert>
+    	 
+<!-- SQL : SELECT --> 	 
+<!-- 양도글 상세 조회  --> 
+
+	 <select 	id="getTransfer" parameterType="int" resultMap="transferMapper">
+	  SELECT
+	  t.*,s.nick_name nick_name
+	  FROM TRANSFER t , USERS s 
+      WHERE t.user_id = s.user_id 
+      AND transfer_no = #{value}
+	 </select> 
+	 
+<!-- 양도글 List -->
+    
+	<select  id="listTransfer"  parameterType="map"	resultMap="transferMapper">
+	SELECT S.* 
+	FROM (SELECT @rownum:= @rownum+1 AS R , T.* 
+		FROM (SELECT tt.*,u.nick_name 
+			  FROM TRANSFER tt, USERS u 										  
+	  		  WHERE tt.user_id = u.user_id 
+	  		  <if test="search.id != null">	
+	  		  AND tt.user_id = #{search.id}  
+	  		  </if>
+	  		  AND delete_flag = 'N'
+			      <if test="search.searchCondition != null"> 
+				    <trim prefix="AND">
+						<if test='search.searchCondition == 1 and search.searchKeyword == 1 '> 
+							transfer_price = 0	
+						</if>
+ 					
+ 						<if test='search.searchCondition == 1 and search.searchKeyword == 2 '> 
+							transfer_price BETWEEN 10000 AND 90000
+						</if>
+						
+						<if test='search.searchCondition == 1 and search.searchKeyword == 3 '> 
+							transfer_price BETWEEN 100000 AND 190000
+						</if>
+						
+						<if test='search.searchCondition == 1 and search.searchKeyword == 4 '> 
+							transfer_price BETWEEN 200000 AND 290000	
+						</if>
+					
+						<if test='search.searchCondition == 1 and search.searchKeyword == 5 '> 
+							transfer_price BETWEEN 300000 AND 390000	
+						</if>
+						
+						<if test='search.searchCondition == 1 and search.searchKeyword == 6 '> 
+							transfer_price > 390000
+						</if>
+						
+						<if test='search.searchCondition == 2'>
+							transfer_start_date <![CDATA[ >=]]> #{search.searchStartDate}  
+						</if>
+						
+						<if test='search.searchEndDate != null'>
+							AND transfer_end_date <![CDATA[ <=]]> #{search.searchEndDate}  
+						</if>	
+					</trim>
+				</if>
+				ORDER BY transfer_no DESC) T, (select @rownum:= 0) M
+				WHERE @rownum  <![CDATA[ <=]]> #{search.endRowNum} ) S
+				WHERE R BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
+	 </select> 	
+	 
+	 
+	 
+	 
+<!-- 내가 양수신청한 양도글 리스트 + 양수상태, 양수번호 -->
+	 
+	<select id="listTransferForReceive" parameterType="search" resultMap="transferMapper">
+      <!-- SELECT t.*, r.receive_status receive_status, r.receive_no receive_no , r.receive_reg_date receive_reg_date, r.user_id transferee
+      FROM TRANSFER t, RECEIVE r
+      WHERE r.user_id = #{value}
+      AND t.transfer_no = r.transfer_no;
+       -->
+      SELECT S.* 
+      FROM (   SELECT @rownum:= @rownum+1 AS R , T.* 
+            FROM (   SELECT t.*, r.receive_status receive_status, r.receive_no receive_no , r.receive_reg_date receive_reg_date, r.receive_title receive_title
+                  FROM TRANSFER t, RECEIVE r
+                  WHERE r.user_id = #{id}
+                  AND t.transfer_no = r.transfer_no) T, (select @rownum:= 0) M
+            WHERE @rownum  <![CDATA[ <=]]> #{endRowNum} ) S
+            WHERE R BETWEEN #{startRowNum} AND #{endRowNum} 
+   </select> 
+	 
+	 
+
+<!-- SQL : UPDATE --> 	 
+<!-- 캠핑예약테이블의 상태값 변경, 1,2일경우 3으로 3일경우 5로 이때 양도 테이블 상태도 같이 변경 --> 	 
+
+ 	<update	id="updateReservationStatus" parameterType="String"  ><!--  resultType=int를 넣으면 error가 난다. update에는 resulttype이 없다? -->
+	UPDATE CAMP_RESERVATION
+		<set> 
+	  reservation_status = CASE 
+      WHEN reservation_status = 1 THEN 3
+      WHEN reservation_status = 2 THEN 3
+      WHEN reservation_status = 3 THEN 5
+      ELSE reservation_status
+      END
+	   	</set>
+	   	WHERE reservation_no = #{value}
+	</update>
+	 
+<!-- 양도글 삭제  -->
+ 	<update	id="deleteTransfer"	parameterType="int" >
+	 UPDATE TRANSFER
+		<set> 
+	 		delete_flag = 'Y'
+		</set>
+	 WHERE transfer_no = #{value}
+	 </update> 
+
+<!-- 양도글 블라인드 처리 관리자일 경우 가능하다.--> 	 	 
+ 	<update	id="blindTransfer"	parameterType="int" >
+	 UPDATE TRANSFER
+		<set> 
+	 		delete_flag = 'X'
+		</set>
+	 WHERE transfer_no = #{value}
+	 </update> 
+
+<!-- 양도글 수정  -->	 
+	  
+	<update	id="updateTransfer"	parameterType="transfer" >
+		 UPDATE TRANSFER
+	   	<set>
+		transfer_title= #{transferTitle},
+		transfer_camp_area= #{transferArea},
+		transfer_camp_name= #{transferCampname},
+		transfer_mainsite_type= #{transferMainsiteType},
+		transfer_camp_call= #{transferCampCall},
+		transfer_start_date= #{transferStartDate},
+		transfer_end_date= #{transferEndDate},
+		transfer_price= #{transferPrice},
+		transfer_content= #{transferContent},
+		transfer_add_content= #{transferAddContent},
+		transfer_use_num= #{transferUserNum},
+		transfer_hashtag1= #{hashtag1},
+		transfer_hashtag2= #{hashtag2},
+		transfer_hashtag3= #{hashtag3},
+		<if test="paymentImg != null and paymentImg != ''">
+		transfer_payment_img= #{paymentImg},
+		</if>
+		
+		reservation_no= #{transferReservationNo.reservationNo}
+	   	</set>
+	   	WHERE transfer_no = #{transferNo}
+	 </update> 
+	 
+<!-- 회원탈퇴값 -->	 	 
+	<select id="getTransferStatus" parameterType="String" resultMap="transferMapper">
+		SELECT transfer_status 
+		FROM TRANSFER
+		WHERE user_id = #{value} AND transfer_status IN ('1','2')
+	</select> 
+	
+	
+	
+	<!-- 총 list 수  -->
+<select  id="getTotalCount"  parameterType="search"    resultType="int">   
+   SELECT COUNT(*)   
+   FROM(SELECT tt.*,u.nick_name 
+           FROM TRANSFER tt, USERS u                                 
+             WHERE tt.user_id = u.user_id 
+             <if test="id != null">   
+             AND tt.user_id = #{id}  
+             </if>
+             AND delete_flag = 'N'
+               <if test="searchCondition != null"> 
+                <trim prefix="AND">
+                  <if test='searchCondition == 1 and searchKeyword == 1'> 
+                     transfer_price = 0   
+                  </if>
+                
+                   <if test='searchCondition == 1 and searchKeyword == 2'> 
+                     transfer_price BETWEEN 10000 AND 90000
+                  </if>
+                  
+                  <if test='searchCondition == 1 and searchKeyword == 3'> 
+                     transfer_price BETWEEN 100000 AND 190000
+                  </if>
+                  
+                  <if test='searchCondition == 1 and searchKeyword == 4'> 
+                     transfer_price BETWEEN 200000 AND 290000   
+                  </if>
+               
+                  <if test='searchCondition == 1 and searchKeyword == 5'> 
+                     transfer_price BETWEEN 300000 AND 390000   
+                  </if>
+                  
+                  <if test='searchCondition == 1 and searchKeyword == 6'> 
+                     transfer_price > 390000
+                  </if>
+                  
+                  <if test='searchCondition == 2'>
+                     transfer_start_date <![CDATA[ >=]]> #{searchStartDate}  
+                  </if>
+                  
+                  <if test='searchEndDate != null'>
+                     AND transfer_end_date <![CDATA[ <=]]> #{searchEndDate}  
+                  </if>   
+               </trim>
+            </if>
+            ORDER BY transfer_reg_date DESC   )COUNTTABLE
+      </select> 
+    
+		
+	<select  id="listMyReceiveGetTotalCount"  parameterType="search"    resultType="int">   
+      SELECT COUNT(*)   
+      FROM(   SELECT t.*, r.receive_status receive_status, r.receive_no receive_no , r.receive_reg_date receive_reg_date, r.receive_title receive_title
+            FROM TRANSFER t, RECEIVE r
+            WHERE r.user_id = #{id}
+            AND t.transfer_no = r.transfer_no)COUNTTABLE 
+   </select> 
+	 
+		 
+</mapper> 

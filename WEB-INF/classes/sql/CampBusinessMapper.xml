@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CampBusinessMapper"> 	
+ 		
+	<resultMap id="campSelectMap" type="camp">
+		<result property="campNo" 						column="camp_no" 		  					jdbcType="NUMERIC"/>
+		<result property="user.id"						column="user_id" 		  					jdbcType="VARCHAR"/>
+		<result property="user.campName" 				column="camp_name" 							jdbcType="VARCHAR"/>
+		<result property="user.addr" 					column="addr" 								jdbcType="VARCHAR"/>
+		<result property="user.campCall" 				column="camp_call" 							jdbcType="VARCHAR"/>		
+		<result property="campTempSave" 				column="tempsave_flag" 	  					jdbcType="NUMERIC"/>
+		<result property="deleteFlag" 					column="delete_flag"  						jdbcType="CHAR"/>
+		<result property="campSummery" 					column="camp_summery" 			  			jdbcType="VARCHAR"/>
+		<result property="campDetail" 					column="camp_detail" 	  					jdbcType="VARCHAR"/>
+		<result property="campMapImg" 					column="camp_map_img" 					 	jdbcType="VARCHAR"/>
+		<result property="campImg1" 					column="camp_img1" 							jdbcType="VARCHAR"/>
+		<result property="campImg2" 					column="camp_img2"  						jdbcType="VARCHAR"/>
+		<result property="campImg3" 					column="camp_img3" 			  				jdbcType="VARCHAR"/>
+		<result property="campImg4" 					column="camp_img4" 	  						jdbcType="VARCHAR"/>
+		<result property="campImg5" 					column="camp_img5" 		 					jdbcType="VARCHAR"/>
+		<result property="campViewCountCurrentMonth"	column="camp_view_count_previous_month"		jdbcType="NUMERIC"/>
+		<result property="campReservationCount" 		column="camp_reservation_count" 			jdbcType="NUMERIC"/>
+		<result property="campRegDate" 					column="camp_reg_date" 	  					jdbcType="DATE"/>
+		<result property="campTheme1" 					column="camp_theme1" 		 				jdbcType="VARCHAR"/>
+		<result property="campTheme2" 					column="camp_theme2" 						jdbcType="VARCHAR"/>
+		<result property="campNature1" 					column="camp_nature1"  						jdbcType="VARCHAR"/>
+		<result property="campNature2" 					column="camp_nature2" 			  			jdbcType="VARCHAR"/>
+		<result property="campOperation1" 				column="camp_operation1" 	  				jdbcType="VARCHAR"/>
+		<result property="campOperation2" 				column="camp_operation2" 		 			jdbcType="VARCHAR"/>
+		<result property="campRate" 					column="camp_rating" 						jdbcType="DOUBLE"/>		
+	</resultMap>
+	
+	<resultMap id="mainSiteSelectMap" type="mainSite">
+		<result property="mainSiteNo" 						column="mainsite_no" 		  				jdbcType="NUMERIC"/>
+		<result property="campNo"							column="camp_no" 		  					jdbcType="NUMERIC"/>
+		<result property="mainSiteType" 					column="mainsite_type" 	  					jdbcType="VARCHAR"/>
+		<result property="deleteFlag" 						column="delete_flag"  						jdbcType="CHAR"/>
+		<result property="mainSiteName" 					column="mainsite_name" 			  			jdbcType="VARCHAR"/>
+		<result property="mainSiteSection" 					column="mainsite_section" 	  				jdbcType="VARCHAR"/>
+		<result property="mainSiteSize" 					column="mainsite_size" 		 				jdbcType="VARCHAR"/>
+		<result property="mainSiteMinCapacity" 				column="mainsite_min_capacity" 				jdbcType="NUMERIC"/>
+		<result property="mainSiteMaxCapacity" 				column="mainsite_max_capacity" 				jdbcType="NUMERIC"/>
+		<result property="mainSiteMinPrice" 				column="mainsite_min_price" 				jdbcType="NUMERIC"/>
+		<result property="mainSiteAddPrice" 				column="mainsite_add_price" 				jdbcType="NUMERIC"/>
+		<result property="mainSiteParkingSize" 				column="mainsite_parking_size" 				jdbcType="NUMERIC"/>
+		<result property="mainSiteInfo" 					column="mainsite_info" 						jdbcType="VARCHAR"/>
+		<result property="mainSiteReservationStart" 		column="mainsite_reservation_start" 		jdbcType="DATE"/>
+		<result property="mainSiteReservationEnd"			column="mainsite_reservation_end" 			jdbcType="DATE"/>
+		<result property="mainSiteReservationUserName"		column="mainsite_reservation_user_name"		jdbcType="VARCHAR"/>
+		<result property="mainSiteRegDate" 					column="mainsite_reg_date" 					jdbcType="DATE"/>
+		<result property="mainSiteImg1" 					column="mainsite_img1" 						jdbcType="VARCHAR"/>
+		<result property="mainSiteImg2" 					column="mainsite_img2" 						jdbcType="VARCHAR"/>
+		<result property="mainSiteImg3" 					column="mainsite_img3" 						jdbcType="VARCHAR"/>
+		<result property="campName" 						column="camp_name" 							jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="subSiteSelectMap" type="subSite">
+		<result property="subSiteNo" 			column="subsite_no" 		  	jdbcType="NUMERIC"/>
+		<result property="campNo"				column="camp_no" 		  		jdbcType="NUMERIC"/>
+		<result property="subSiteType" 			column="subsite_type" 	  		jdbcType="VARCHAR"/>
+		<result property="subSiteRegDate" 		column="subsite_reg_date"  		jdbcType="DATE"/>
+		<result property="subSiteName" 			column="subsite_name" 			jdbcType="VARCHAR"/>
+		<result property="subSiteInfo" 			column="subsite_info" 	  		jdbcType="VARCHAR"/>
+		<result property="subSiteImg" 			column="subsite_img" 		 	jdbcType="VARCHAR"/>
+		<result property="campName" 			column="camp_name" 				jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="CampReservationSelectMap" type="campReservation">
+		<result property="camp.campNo"					 	column="camp_no" 							jdbcType="NUMERIC"/>
+		<result property="camp.user.id"					 	column="campUserId" 						jdbcType="VARCHAR"/>
+		<result property="camp.user.addr"					column="addr" 								jdbcType="VARCHAR"/>
+		<result property="camp.user.campName"			 	column="camp_name" 							jdbcType="VARCHAR"/>
+		<result property="camp.user.campCall" 				column="camp_call" 							jdbcType="VARCHAR"/>
+		<result property="camp.campImg1" 					column="camp_img1" 							jdbcType="VARCHAR"/>
+		<result property="user.id" 							column="user_id" 							jdbcType="VARCHAR"/>
+		<result property="mainSite.mainSiteNo"				column="mainsite_no" 						jdbcType="NUMERIC"/>
+		<result property="mainSite.mainSiteType"			column="mainsite_type" 						jdbcType="VARCHAR"/>
+		<result property="mainSite.mainSiteName"			column="mainsite_name" 						jdbcType="VARCHAR"/>
+		<result property="reservationNo"					column="reservation_no" 					jdbcType="VARCHAR"/>
+		<result property="reservationStatus" 				column="reservation_status" 				jdbcType="NUMERIC"/>
+		<result property="deleteFlag" 						column="delete_flag" 						jdbcType="CHAR"/>
+		<result property="reservationRegDate"				column="reservation_reg_date" 				jdbcType="DATE"/>
+		<result property="reservationUserName" 				column="reservation_user_name" 				jdbcType="VARCHAR"/>
+		<result property="reservationStartDate" 			column="reservation_start_date" 			jdbcType="DATE"/>
+		<result property="reservationEndDate" 				column="reservation_end_date" 				jdbcType="DATE"/>
+		<result property="useNum" 							column="use_num" 							jdbcType="NUMERIC"/>
+		<result property="reservationUserPhone" 			column="reservation_user_phone" 			jdbcType="VARCHAR"/>
+		<result property="reservationRegCarNum" 			column="reservation_reg_car_num" 			jdbcType="VARCHAR"/>
+		<result property="reservationRequest" 				column="reservation_request" 				jdbcType="VARCHAR"/>
+		<result property="totalPaymentPrice" 				column="total_payment_price" 				jdbcType="NUMERIC"/>
+		<result property="totalReservationRegCar" 			column="total_reservation_reg_car" 			jdbcType="NUMERIC"/>
+		<result property="paymentType" 						column="payment_type" 						jdbcType="NUMERIC"/>
+	</resultMap>	
+		
+	<resultMap id="qnaSelectMap" type="qna">
+		<result property="qnaNo" 			column="qna_no" 			jdbcType="NUMERIC"/>
+		<result property="sender.id" 		column="sender_id" 			jdbcType="VARCHAR"/>
+		<result property="receiver.id" 	   	column="receiver_id" 		jdbcType="VARCHAR"/>
+		<result property="deleteFlag" 	   	column="delete_flag" 		jdbcType="CHAR"/>
+		<result property="questionTitle"   	column="question_title" 	jdbcType="VARCHAR"/>
+		<result property="questionContent" 	column="question_content" 	jdbcType="VARCHAR"/>
+		<result property="questionRegDate" 	column="question_reg_date" 	jdbcType="VARCHAR"/>
+		<result property="viewCount" 		column="view_count" 		jdbcType="NUMERIC"/>
+		<result property="answerContent" 	column="answer_content" 	jdbcType="VARCHAR"/>
+		<result property="answerRegDate" 	column="answer_reg_date" 	jdbcType="VARCHAR"/>
+		<result property="campNo" 			column="camp_no" 			jdbcType="NUMERIC"/>
+		<result property="campName" 		column="camp_name" 			jdbcType="VARCHAR"/>
+		
+		<association property="sender" javaType="user">
+			<id property="id"			column="sender_id"        jdbcType="VARCHAR"/>
+			<result property="nickName" column="sender_nick_name" jdbcType="VARCHAR" />
+		</association>
+		
+		<association property="receiver" javaType="user">
+			<id property="id"			column="receiver_id"        jdbcType="VARCHAR"/>
+			<result property="nickName" column="receiver_nick_name" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<resultMap id="noticeSelectMap" type="notice">
+		<result property="noticeNo"      column="notice_no" 	 jdbcType="NUMERIC"/>
+		<result property="writer.id"     column="user_id" 		 jdbcType="VARCHAR"/>
+		<result property="deleteFlag"    column="delete_flag" 	 jdbcType="CHAR"/>
+		<result property="noticeTitle"   column="notice_title"   jdbcType="VARCHAR"/>
+		<result property="noticeContent" column="notice_content" jdbcType="VARCHAR"/>
+		<result property="viewCount"     column="view_count" 	 jdbcType="NUMERIC"/>
+		<result property="regDate" 		 column="reg_date" 	     jdbcType="VARCHAR"/>
+		<result property="campNo" 		 column="camp_no" 	     jdbcType="NUMERIC"/>
+		<result property="campName" 	 column="camp_name" 	 jdbcType="VARCHAR"/>
+		<result property="noticeFile1" 	 column="notice_file1" 	 jdbcType="VARCHAR"/>
+		<result property="noticeFile2" 	 column="notice_file2" 	 jdbcType="VARCHAR"/>
+		<result property="noticeFile3" 	 column="notice_file3" 	 jdbcType="VARCHAR"/>
+		<result property="noticeFile4" 	 column="notice_file4" 	 jdbcType="VARCHAR"/>
+		<result property="noticeFile5" 	 column="notice_file5" 	 jdbcType="VARCHAR"/>
+		
+		<association property="writer" javaType="user">
+		      <id property="id"						       column="user_id"                    jdbcType="VARCHAR"/>
+		      <result property="role"  					   column="role"                       jdbcType="VARCHAR" />
+		      <result property="nickName"                  column="nick_name"                  jdbcType="VARCHAR" />
+		      <result property="password"                  column="password"                   jdbcType="VARCHAR" />
+		      <result property="name"                      column="name"                       jdbcType="VARCHAR" />
+		      <result property="phone"                     column="phone"                      jdbcType="VARCHAR" />
+		      <result property="addr"                      column="addr"                       jdbcType="VARCHAR" />
+		      <result property="addUserRegDate"            column="entry_reg_date"             jdbcType="DATE"  />
+		      <result property="bank"                      column="bank"                       jdbcType="VARCHAR" />
+		      <result property="accountHolder"             column="account_holder"             jdbcType="VARCHAR" />
+		      <result property="accountNum"                column="account_num"                jdbcType="VARCHAR" />
+		      <result property="havingPoint"               column="having_point"               jdbcType="NUMERIC" />
+		      <result property="campName"                  column="camp_name"                  jdbcType="VARCHAR" />
+		      <result property="campCall" 				   column="camp_call"                  jdbcType="VARCHAR" />
+		      <result property="businessUserApprovalFlag"  column="entry_approval_flag"        jdbcType="CHAR" />
+		      <result property="countCancelReceive" 	   column="receive_cancel_total_count" jdbcType="NUMERIC" />
+		      <result property="receiveProhibitionEndDate" column="receive_ban_end_date"       jdbcType="DATE" />
+		      <result property="dormantConversionDate"     column="dormant_reg_date"           jdbcType="DATE" />
+		      <result property="secessionRegDate"          column="secession_reg_date"         jdbcType="DATE" />
+		      <result property="suspensionDate"            column="suspension_reg_date"        jdbcType="DATE" />
+		      <result property="suspensionContent"         column="suspension_content"         jdbcType="VARCHAR" />
+		      <result property="auctionGrade"              column="auction_grade"              jdbcType="SMALLINT" />
+		</association>
+	</resultMap>
+	
+	
+	<!-- SQL : Camp ################################################################################################################### -->
+	
+	<insert id="addCamp" parameterType="camp" >	
+		INSERT 
+		INTO CAMP ( user_id, camp_reg_date, camp_theme1, camp_theme2, 
+					camp_nature1, camp_nature2, camp_operation1, camp_operation2)			
+		VALUES	 ( #{user.id}
+					, #{campRegDate}					
+					, #{campTheme1}
+					, #{campTheme2}
+					, #{campNature1}
+					, #{campNature2}
+					, #{campOperation1}
+					, #{campOperation2} )
+	</insert>
+	
+	
+	<insert id="getRegNumInCamp" parameterType="camp" >	
+		INSERT 
+		INTO CAMP ( user_id, camp_reg_date, camp_theme1, camp_theme2, 
+					camp_nature1, camp_nature2, camp_operation1, camp_operation2)			
+		VALUES	 ( #{user.id}
+					, #{campRegDate}					
+					, #{campTheme1}
+					, #{campTheme2}
+					, #{campNature1}
+					, #{campNature2}
+					, #{campOperation1}
+					, #{campOperation2} )
+	</insert>
+		
+	<select	id="getRegNumOutCamp" parameterType="camp" resultType="int">
+	   	SELECT camp_no
+	   	FROM CAMP
+	   	WHERE camp_reg_date = #{campRegDate}
+	   		AND user_id = #{user.id}
+	</select>
+
+	<select id="getCamp" parameterType="int" resultMap="campSelectMap">
+		SELECT 	*
+		FROM CAMP
+		WHERE camp_no = #{value}
+	</select>
+	
+	<select id="listCamp" parameterType="search" resultMap="campSelectMap">
+  		SELECT c.camp_no, c.delete_flag, c.camp_reg_date, u.user_id, u.camp_name, u.camp_call, u.addr,   
+				c.camp_view_count_current_month, c.camp_reservation_count, c.camp_rating  								  		
+		FROM CAMP c, USERS u
+		WHERE c.user_id = u.user_id					
+		ORDER BY camp_no 
+		LIMIT #{pageSize} OFFSET #{offset};			
+	</select>
+	
+	<select id="getTotalCountCamp" parameterType="search" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM( SELECT c.camp_no, c.delete_flag, c.camp_reg_date, u.user_id, u.camp_name, u.camp_call, u.addr,
+	  					c.camp_view_count_current_month, c.camp_reservation_count, c.camp_rating  								  		
+				FROM CAMP c, USERS u
+				WHERE c.user_id = u.user_id
+			) countTable						
+	</select>
+	
+	<update	id="updateCamp" parameterType="camp" >
+	   	UPDATE CAMP
+	   	SET	tempsave_flag = #{campTempSave}
+	   		, camp_reg_date = #{campRegDate}
+			, camp_summery = #{campSummery}
+			, camp_detail = #{campDetail}
+			, camp_map_img = #{campMapImg}
+			, camp_img1 =  #{campImg1}
+			, camp_img2 = #{campImg2}
+			, camp_img3 = #{campImg3}
+			, camp_img4 = #{campImg4}
+			, camp_img5 = #{campImg5}
+			, camp_theme1 = #{campTheme1}
+			, camp_theme2 = #{campTheme2}
+			, camp_nature1 = #{campNature1}
+			, camp_nature2 = #{campNature2}
+			, camp_operation1 = #{campOperation1}
+			, camp_operation2 = #{campOperation2}  	
+	   	WHERE camp_no = #{campNo}
+	</update>
+	
+	<update	id="deleteCamp"	parameterType="int" >
+	   	UPDATE CAMP
+	   	SET delete_flag = 'T'
+	   	WHERE camp_no = #{value}
+	</update>
+	
+	<select	id="getCampNoById" parameterType="String" resultType="int">
+	   	SELECT camp_no
+	   	FROM CAMP
+	   	WHERE user_id = #{value}
+	</select>
+	
+	<select	id="getCampTempSaveById" parameterType="String" resultType="int">
+	   	SELECT tempsave_flag
+	   	FROM CAMP
+	   	WHERE user_id = #{value}
+	</select>
+	
+	<select id="getCampReservationCount" parameterType="int">
+		SELECT COUNT(*)
+		FROM (	SELECT mainsite_reservation_start, mainsite_reservation_end
+				FROM MAINSITE
+				WHERE camp_no = #{value}
+					AND mainsite_reservation_start <![CDATA[>=]]> date_format(now(), '%Y%m%d')
+					AND mainsite_reservation_end <![CDATA[<=]]> date_format(now(), '%Y%m%d') )countTable
+	</select>
+	
+	<select id="listReservationByCampNo" parameterType="int" resultMap="CampReservationSelectMap">
+		SELECT DISTINCT r.reservation_no, r.reservation_start_date, r.reservation_end_date, m.mainsite_type, m.mainsite_name,
+						r.reservation_reg_date, r.reservation_user_name, r.reservation_user_phone, r.use_num, r.reservation_status, r.total_payment_price,
+						r.camp_no, u.camp_name, u.camp_call, u.addr	
+		FROM CAMP_RESERVATION r, MAINSITE m, CAMP c, USERS u
+		WHERE c.user_id = u.user_id 
+			AND c.camp_no = r.camp_no 
+			AND r.mainsite_no = m.mainsite_no 
+			AND r.delete_flag = 'N'
+			AND r.camp_no = #{value}
+	</select>
+	
+	<!-- SQL : MainSite ################################################################################################################### -->
+	
+	<insert id="getRegNumInMainSite" parameterType="mainSite" >	
+		INSERT 
+		INTO MAINSITE ( camp_no, mainsite_type, mainsite_name, mainsite_min_capacity, mainsite_max_capacity,
+					mainsite_min_price, mainsite_add_price, mainsite_reg_date)			
+		VALUES	 ( #{campNo}
+					, #{mainSiteType}					
+					, #{mainSiteName}
+					, #{mainSiteMinCapacity}
+					, #{mainSiteMaxCapacity}
+					, #{mainSiteMinPrice}
+					, #{mainSiteAddPrice}
+					, #{mainSiteRegDate} )
+	</insert>
+		
+	<select	id="getRegNumOutMainSite" parameterType="mainSite" resultType="int">
+	   	SELECT mainsite_no
+	   	FROM MAINSITE
+	   	WHERE mainsite_reg_date = #{mainSiteRegDate}
+	   		AND mainsite_name = #{mainSiteName}
+	</select>
+	
+	<insert id="addMainSite" parameterType="mainSite" >	
+		INSERT 
+		INTO MAINSITE ( camp_no, mainsite_type, mainsite_name, mainsite_section, mainsite_size, 
+						mainsite_min_capacity, mainsite_max_capacity, mainsite_min_price, mainsite_add_price, mainsite_parking_size, 
+						mainsite_info, mainsite_reg_date, mainsite_img1, mainsite_img2, mainsite_img3 )	
+		VALUES	 ( #{campNo}
+					, #{mainSiteType}
+					, #{mainSiteName}
+					, #{mainSiteSection :VARCHAR}
+					, #{mainSiteSize :VARCHAR}
+					, #{mainSiteMinCapacity}
+					, #{mainSiteMaxCapacity}
+					, #{mainSiteMinPrice}
+					, #{mainSiteAddPrice}
+					, #{mainSiteParkingSize}
+					, #{mainSiteInfo :VARCHAR}
+					, #{mainSiteRegDate}
+					, #{mainSiteImg1 :VARCHAR}
+					, #{mainSiteImg2 :VARCHAR}
+					, #{mainSiteImg3 :VARCHAR} )
+	</insert>
+
+	<select id="getMainSite" parameterType="int" resultMap="mainSiteSelectMap">
+		SELECT 	*
+		FROM MAINSITE
+		WHERE mainsite_no = #{value}
+	</select>
+	
+	<select id="listMainSite" parameterType="search" resultMap="mainSiteSelectMap">
+  		
+  		SELECT m.delete_flag, m.camp_no, m.mainsite_no, m.mainsite_type, m.mainsite_name, m.mainsite_section,  
+	  			m.mainsite_reservation_start, m.mainsite_reservation_end, m.mainsite_reservation_user_name, u.camp_name  								  		
+		FROM MAINSITE m, CAMP c, USERS u
+		WHERE m.camp_no = c.camp_no
+			AND  c.user_id  =  u.user_id
+			<if test="role == 'BUSINESS'">					
+				AND  m.camp_no  =  #{campNo}
+			</if>
+			<if test="searchCondition != null">
+				<if test="searchCondition == 1 and searchKeyword !='' ">
+					AND m.mainsite_name = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 2 and searchKeyword !='' ">
+					AND m.mainsite_type = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 3 and searchKeyword !='' ">
+					AND m.mainsite_section = #{searchKeyword}
+				</if>
+				<if test="searchCondition == 4 and searchKeyword !='' ">
+					AND m.mainsite_reservation_user_name = #{searchKeyword}
+				</if>
+			</if>		
+			ORDER BY mainsite_no		
+		<if test="pageSize != '' and offset !='' "> 
+			LIMIT #{pageSize} OFFSET #{offset};
+		</if>			
+	</select>
+	
+	<select id="getTotalCountMainSite" parameterType="search" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT 	m.delete_flag, m.camp_no, m.mainsite_no, m.mainsite_type, m.mainsite_name, m.mainsite_section,  
+	  						m.mainsite_reservation_start, m.mainsite_reservation_end, m.mainsite_reservation_user_name, u.camp_name  								  		
+				FROM 	MAINSITE m, CAMP c, USERS u
+				WHERE 	m.camp_no = c.camp_no
+						AND  c.user_id  =  u.user_id					
+						<if test="role == 'BUSINESS'">
+							AND  m.camp_no  =  #{campNo}
+						</if>					
+						<if test="searchCondition != null">
+							<if test="searchCondition == 1 and searchKeyword !='' ">
+								AND m.mainsite_name = #{searchKeyword}
+							</if>
+							<if test="searchCondition == 2 and searchKeyword !='' ">
+								AND m.mainsite_type = #{searchKeyword}
+							</if>
+							<if test="searchCondition == 3 and searchKeyword !='' ">
+								AND m.mainsite_section = #{searchKeyword}
+							</if>
+							<if test="searchCondition == 4 and searchKeyword !='' ">
+								AND m.mainsite_reservation_user_name = #{searchKeyword}
+							</if>
+						</if>
+			) countTable						
+	</select>
+		
+	<update	id="updateMainSite" parameterType="mainSite" >
+	   	UPDATE MAINSITE
+	   	SET	mainsite_type = #{mainSiteType}
+			, mainsite_name = #{mainSiteName}
+			, mainsite_section = #{mainSiteSection}
+			, mainsite_size = #{mainSiteSize}
+			, mainsite_min_capacity =  #{mainSiteMinCapacity}
+			, mainsite_max_capacity = #{mainSiteMaxCapacity}
+			, mainsite_min_price = #{mainSiteMinPrice}
+			, mainsite_add_price = #{mainSiteAddPrice}
+			, mainsite_parking_size = #{mainSiteParkingSize}
+			, mainsite_reg_date = #{mainSiteRegDate}
+			, mainsite_info = #{mainSiteInfo}
+			, mainsite_img1 = #{mainSiteImg1}
+			, mainsite_img2 = #{mainSiteImg2}
+			, mainsite_img3 = #{mainSiteImg3}   	
+	   	WHERE mainsite_no = #{mainSiteNo}
+	</update>
+	
+	<update	id="deleteMainSite" parameterType="int" >
+	   	UPDATE MAINSITE
+	   	SET	delete_flag = 'T'
+	   	WHERE mainsite_no = #{value}
+	</update>
+	
+	
+	
+	
+	<!-- SQL : SubSite ################################################################################################################### -->
+	
+	<insert id="getRegNumInSubSite" parameterType="subSite" >	
+		INSERT 
+		INTO SUBSITE ( camp_no, subsite_type, subsite_name, subsite_reg_date)			
+		VALUES	 ( #{campNo}
+					, #{subSiteType}					
+					, #{subSiteName}
+					, #{subSiteRegDate} )
+	</insert>
+		
+	<select	id="getRegNumOutSubSite" parameterType="subSite" resultType="int">
+	   	SELECT subsite_no
+	   	FROM SUBSITE
+	   	WHERE subsite_reg_date = #{subSiteRegDate}
+	   		AND subsite_name = #{subSiteName}
+	</select>
+
+	<insert id="addSubSite"	parameterType="subSite" >	
+		INSERT 
+		INTO SUBSITE (camp_no, subsite_type, subsite_reg_date, subsite_name, subsite_info)
+		VALUES	 (	#{campNo} 
+					, #{subSiteType} 
+					, #{subSiteRegDate} 
+					, #{subSiteName} 
+					, #{subSiteInfo :VARCHAR} )
+	</insert>
+
+	<select id="getSubSite" parameterType="int" resultMap="subSiteSelectMap">
+		SELECT 	*
+		FROM SUBSITE
+		WHERE subsite_no = #{value}
+	</select>
+	
+	<select id="listSubSite" parameterType="search" resultMap="subSiteSelectMap">
+	  		SELECT  s.camp_no, s.subsite_no, s.subsite_name, s.subsite_type, u.camp_name							  		
+			FROM SUBSITE s, CAMP c, USERS u
+			WHERE s.camp_no = c.camp_no
+				AND  c.user_id  =  u.user_id	
+				<if test="role == 'BUSINESS'">					
+					AND  s.camp_no  =  #{campNo}
+				</if>
+				<if test="searchCondition != null">
+					<if test="searchCondition == 1 and searchKeyword !='' ">
+						AND s.subsite_name = #{searchKeyword}
+					</if>
+					<if test="searchCondition == 2 and searchKeyword !='' ">
+						AND s.subsite_type = #{searchKeyword}
+					</if>
+				</if>
+		
+		ORDER BY s.subsite_no 
+		LIMIT #{pageSize} OFFSET #{offset};			
+	</select>
+	
+	<select id="getTotalCountSubSite" parameterType="search" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT  s.camp_no, s.subsite_no, s.subsite_name, s.subsite_type, u.camp_name							  		
+				FROM SUBSITE s, CAMP c, USERS u
+				WHERE s.camp_no = c.camp_no
+					AND  c.user_id  =  u.user_id					
+					<if test="role == 'BUSINESS'">
+						AND  s.camp_no  =  #{campNo}
+					</if>					
+					<if test="searchCondition != null">
+						<if test="searchCondition == 1 and searchKeyword !='' ">
+							AND s.subsite_name = #{searchKeyword}
+						</if>
+						<if test="searchCondition == 2 and searchKeyword !='' ">
+							AND s.subsite_type = #{searchKeyword}
+						</if>
+					</if>
+			) countTable						
+	</select>
+	
+	<update	id="updateSubSite" parameterType="mainSite" >
+	   	UPDATE SUBSITE
+	   	SET	subsite_type = #{subSiteType}
+			, subsite_name = #{subSiteName}
+			, subsite_info = #{subSiteInfo}
+			, subsite_reg_date = #{subSiteRegDate}
+	   	WHERE subsite_no = #{subSiteNo}
+	</update>
+	
+	<delete id="deleteSubSite" parameterType="int">
+        DELETE 
+        FROM SUBSITE 
+        WHERE subsite_no = #{value}
+    </delete>
+    
+    
+    <!-- SQL : Qna ################################################################################################################### -->
+	
+	<select id="listCampQna" parameterType="int" resultMap="qnaSelectMap">
+		SELECT *
+		FROM QNA 
+		WHERE delete_flag = 'N'
+			AND camp_no = #{value}			
+	</select>
+	
+	<select id="listCampQnaById" parameterType="String" resultMap="qnaSelectMap">
+		SELECT sender_id, question_title, question_content, question_reg_date, answer_content, answer_reg_date
+		FROM QNA 
+		WHERE delete_flag = 'N'
+			AND sender_id = #{value}			
+	</select>
+	
+	
+	<insert id="addCampQnaQuestion" parameterType="qna">
+		INSERT 
+		INTO QNA (sender_id, question_title, question_content, camp_no, camp_name)
+		VALUE ( #{sender.id}
+				, #{questionTitle}
+				,#{questionContent}
+				,#{campNo:NUMERIC}
+				,#{campName:VARCHAR})			
+	</insert>
+	
+	<select id="getCampQna" parameterType="int" resultMap="qnaSelectMap">
+		SELECT 	*
+		FROM QNA
+		WHERE qna_no = #{value}
+	</select>
+	
+	<update	id="addCampQnaAnswer" parameterType="qna">
+	   	UPDATE QNA
+	   	SET	answer_content = #{answerContent}
+			, answer_reg_date = now()
+	   	WHERE qna_no = #{qnaNo}
+	</update>
+    
+    
+    <!-- SQL : Notice ################################################################################################################### -->
+	
+	<select id="listCampNotice"	parameterType="int" resultMap="noticeSelectMap">
+		SELECT *
+		FROM NOTICE 
+		WHERE delete_flag = 'N'
+			AND camp_no = #{value}			
+	</select>
+	
+	<insert id="addCampNotice" parameterType="notice">
+		INSERT 
+		INTO NOTICE (user_id, camp_no, notice_title, notice_content)
+		VALUE (	#{writer.id}
+				, #{campNo}
+				, #{noticeTitle:VARCHAR}
+				, #{noticeContent:VARCHAR} )
+	</insert>
+	
+	<select id="getCampNotice" parameterType="int" resultMap="noticeSelectMap">
+		SELECT 	*
+		FROM NOTICE
+		WHERE notice_no = #{value}
+	</select>
+	
+	<update	id="updateCampNotice" parameterType="notice">
+	   	UPDATE NOTICE
+	   	SET	notice_title = #{noticeTitle}
+			, notice_content = #{noticeContent}
+	   	WHERE notice_no = #{noticeNo}
+	</update>
+	
+	<delete	id="deleteCampNotice" parameterType="int">
+		DELETE 
+        FROM NOTICE 
+        WHERE notice_no = #{value}
+	</delete>	
+
+</mapper>
